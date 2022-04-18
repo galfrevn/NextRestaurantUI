@@ -13,9 +13,9 @@ function SearchBar() {
         />
         <BiSearchAlt className="absolute right-4 top-3.5 w-5 h-5 text-customDark " />
       </div>
-      <div className="ml-4 bg-accent rounded-xl p-3">
+      {/* <div className="ml-4 bg-accent rounded-xl p-3">
         <BiWrench className="w-5 h-5 text-white" />
-      </div>
+      </div> */}
     </div>
   );
 }
