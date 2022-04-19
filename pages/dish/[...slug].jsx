@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useRouter } from "next/router";
 import { BiBasket, BiChevronLeft, BiHeart } from "react-icons/bi";
 import Counter from "../components/Counter";
 
-import { PATHS } from "../../queries";
 import client from "../../client";
 import { gql } from "@apollo/client";
+import CartContext from "../../context/CartContext";
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Dish({ findFood }) {
   const router = useRouter();
@@ -13,24 +16,22 @@ export default function Dish({ findFood }) {
     router.back();
   };
 
-  console.log(findFood);
-
   return (
-    <div className="relative h-screen">
+    <div className="relative h-screen bg-white z-40">
+      <ToastContainer limit={1} />
       <BackButton handleBack={handleBack} />
       <DishImage image={findFood.image} />
       <Information data={findFood} />
-      
     </div>
   );
 }
 
 export const BackButton = ({ handleBack }) => (
   <button
-    className="fixed top-8 left-4 bg-customLight p-3 rounded-xl transition-all duration-200 hover:brightness-95"
+    className="fixed top-8 left-4 bg-accent p-3 rounded-xl transition-all duration-200 hover:brightness-95"
     onClick={handleBack}
   >
-    <BiChevronLeft className="text-customDark w-5 h-5" />
+    <BiChevronLeft className=" w-5 h-5 stroke-1 text-white" />
   </button>
 );
 
@@ -40,7 +41,7 @@ export const DishImage = ({ image }) => (
   </div>
 );
 
-export const Information = ({data}) => (
+export const Information = ({ data }) => (
   <>
     <div className="absolute bottom-0 w-screen left-0 h-1/2 bg-customLight rounded-t-xl">
       <div className="w-full h-auto pb-12 px-8 flex flex-col items-center text-customDark">
@@ -55,29 +56,60 @@ export const Information = ({data}) => (
 
         <div className="flex text-sm font-semibold mt-6 items-center">
           <img src="../assets/clock.svg" alt="Timer" className="w-5 h-5 mr-1" />
-          <p><span> Time: 0-</span>{data.stimatedTime} <span>min</span></p>
+          <p>
+            <span> Time: 0-</span>
+            {data.stimatedTime} <span>min</span>
+          </p>
         </div>
       </div>
-      <BottomOptions stars={data.stars} />
+      <BottomOptions data={data} />
     </div>
   </>
 );
 
-export const BottomOptions = ({stars}) => (
-  <div className="bg-white w-full z-10 flex flex-col items-end py-4 px-8 rounded-t-xl soft-shadow-vertical ">
-    <div className="flex items-center w-full justify-between mb-5">
-      <Counter />
-      <div className="flex space-x-3">
-        <FavButton />
-        <Rating stars={stars} />
-      </div>
-    </div>
+export const BottomOptions = ({ data }) => {
+  const { cartItems, setCartItems } = useContext(CartContext);
 
-    <button className="bg-accent hover:brightness-105 transition-all duration-200 px-10 py-3 rounded-xl flex items-center text-white font-semibold text-sm">
-      Add to card <BiBasket className="ml-2 w-4 h-4" />
-    </button>
-  </div>
-);
+  const notify = () => {
+    toast.info("🍔 added to cart", {
+      position: "top-right",
+      autoClose: 700,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: false,
+      draggable: false,
+      progress: undefined,
+    });
+  toast.clearWaitingQueue()
+}
+
+  const handleAddToCard = () => {
+    cartItems.push(data.slug);
+    setCartItems(cartItems);
+  };
+
+  return (
+    <div className="bg-white w-full z-10 flex flex-col items-end py-4 px-8 rounded-t-xl soft-shadow-vertical ">
+      <div className="flex items-center w-full justify-between mb-5">
+        <Counter />
+        <div className="flex space-x-3">
+          <FavButton />
+          <Rating stars={data.stars} />
+        </div>
+      </div>
+
+      <button
+        className="bg-accent hover:brightness-105 transition-all duration-200 px-10 py-3 rounded-xl flex items-center text-white font-semibold text-sm"
+        onClick={() => {
+          handleAddToCard();
+          notify();
+        }}
+      >
+        Add to card <BiBasket className="ml-2 w-4 h-4" />
+      </button>
+    </div>
+  );
+};
 
 export const FavButton = () => (
   <button className="rounded-md flex items-center justify-center h-10 w-10 bg-[#f1f1f1] text-customDark font-semibold">
@@ -120,6 +152,7 @@ export async function getStaticProps({ params }) {
     query: gql`
       query Foods($slug: String!) {
         findFood(slug: $slug) {
+          slug
           name
           description
           price
@@ -138,8 +171,7 @@ export async function getStaticProps({ params }) {
 
   return {
     props: {
-      findFood
+      findFood,
     },
-    revalidate: 30,
   };
 }

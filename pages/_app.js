@@ -8,40 +8,63 @@ import SearchBar from "./components/SearchBar";
 
 // Filter Context
 import { FilterContextProvider } from "../context/FilterContext";
+import { CartContextProvider } from "../context/CartContext";
 
 // Styles
 import "../styles/globals.css";
+import client from "../client";
+import { ApolloProvider } from "@apollo/client";
+import Sidebar from "./components/Sidebar";
+import { useState } from "react";
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter();
 
+  const [isOpened, setIsOpened] = useState(false);
+
   return (
-    <FilterContextProvider >
-      <div className="relative">
-        {!router.pathname.includes("/dish/") && (
-          <>
-            <Bar />
-            <SearchBar />
-          </>
-        )}
+    <CartContextProvider>
+      <FilterContextProvider>
+        <RelativeContainer>
+          <ApolloProvider client={client}>
+            {!router.pathname.includes("/dish/") && (
+              <>
+                <Bar isOpened={isOpened} setIsOpened={setIsOpened} />
+                <SearchBar isOpened={isOpened} />
+              </>
+            )}
 
-        <AnimatePresence exitBeforeEnter>
-          <motion.div
-            key={router.route}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <Component {...pageProps} />
-          </motion.div>
-        </AnimatePresence>
+            <Component {...pageProps} isOpened={isOpened} />
 
-        {!router.pathname.includes("/dish/") && (
-          <Navigation selected={router.pathname} />
-        )}
-      </div>
-    </FilterContextProvider>
+            {!router.pathname.includes("/dish/") && (
+              <Navigation selected={router.pathname} isOpened={isOpened} />
+            )}
+          </ApolloProvider>
+          <Sidebar isOpened={isOpened} setIsOpened={setIsOpened} />
+        </RelativeContainer>
+      </FilterContextProvider>
+    </CartContextProvider>
   );
 }
 
 export default MyApp;
+
+export const RelativeContainer = ({ children }) => {
+  const router = useRouter();
+
+  return (
+    <div className="relative h-screen bg-accent overflow-x-hidden">
+      <AnimatePresence exitBeforeEnter>
+        <motion.div
+          key={router.route}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="z-40"
+        >
+          {children}
+        </motion.div>
+      </AnimatePresence>
+    </div>
+  );
+};

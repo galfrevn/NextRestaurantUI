@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import Menu from "./components/Menu";
-import { MENU, MENU_BY_TYPE } from "../queries";
+import { MENU } from "../queries";
 import client from "../client";
 import FilterContext from "../context/FilterContext";
 
@@ -12,26 +12,24 @@ const categories = [
     code: "BURGER",
   },
   {
-    name: "Fried",
-    image: "assets/food-drink/svg/fried-30660.svg",
-    code: "FRIED",
+    name: "Chicken",
+    image: "assets/food-drink/svg/chicken-30650.svg",
+    code: "CHICKEN",
   },
   {
-    name: "Pizza",
+    name: "Pizzas",
     image: "assets/food-drink/svg/food-30675.svg",
     code: "PIZZA",
   },
   {
-    name: "Chicken",
-    image: "assets/food-drink/svg/chicken-30650.svg",
+    name: "Frappes",
+    image: "assets/food-drink/svg/teacup-30687.svg",
+    code: "FRAPPE",
   },
   {
-    name: "Rice",
-    image: "assets/food-drink/svg/rice-30697.svg",
-  },
-  {
-    name: "Wines",
+    name: "Drinks",
     image: "assets/food-drink/svg/wine-30692.svg",
+    code: "DRINK",
   },
   {
     name: "Roasted",
@@ -48,7 +46,7 @@ const categories = [
   },
 ];
 
-export default function Home({ data }) {
+export default function Home({ data, isOpened }) {
   const mainMenu = data.foods;
 
   const [menu, setMenu] = useState(mainMenu);
@@ -65,12 +63,12 @@ export default function Home({ data }) {
 
   return (
     <>
-      <div className="pl-6 py-6 w-full flex items-center space-x-5 overflow-x-scroll scrollbar-none pr-4">
+      <div className={` ${isOpened && "translate-x-2/3"} relative z-40 transition-all duration-300 pl-6 py-6 w-full flex bg-white items-center space-x-5 overflow-x-scroll scrollbar-none pr-4 `}>
         {categories.map((categorie, index) => (
           <CategorieCard key={index} {...categorie} />
         ))}
       </div>
-      <Menu data={menu} />
+      <Menu data={menu} isOpened={isOpened} />
     </>
   );
 }
@@ -80,8 +78,8 @@ export const CategorieCard = ({ name, image, code }) => {
   return (
     <button
       className={` ${
-        filter === code && "bg-accent"
-      } flex justify-center items-center py-2 px-4 rounded-xl text-xs font-medium bg-secondary text-customDark `}
+        filter === code ? "bg-accent text-white" : "bg-secondary text-customDark"
+      } flex justify-center items-center py-2 px-4 rounded-xl text-xs font-medium   `}
       onClick={() => {
         filter === code ? setFilter("") : setFilter(code);
       }}
@@ -95,6 +93,7 @@ export const CategorieCard = ({ name, image, code }) => {
 export async function getStaticProps() {
   const { data } = await client.query({
     query: MENU,
+    fetchPolicy: 'no-cache'
   });
 
   return {

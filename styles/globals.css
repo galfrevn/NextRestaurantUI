@@ -32,3 +32,11 @@ a {
 .soft-shadow-vertical {
   filter: drop-shadow(5px -27px 38px rgba(255, 228, 73, 0.11));
 }
+
+.Toastify__toast-body div {
+  font-size: 0.7rem;
+}
+
+.Toastify__toast-body svg {
+  width: 16px;
+}

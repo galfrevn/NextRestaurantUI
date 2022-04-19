@@ -15,6 +15,35 @@ export const MENU = gql`
   }
 `;
 
+export const FOOD_BY_SLUG = (slug) => gql`
+  query {
+    findFood(slug: "${slug}") {
+      name
+      price
+      type
+      description
+      stars
+      image
+      stimatedTime
+    }
+  }
+`;
+
+export const FOODS_BY_SLUG = gql`
+query FoodsBySlug($slug: [String]) {
+  foodsBySlug(slug: $slug) {
+    name
+    type
+    price
+    description
+    slug
+    stimatedTime
+    image
+    stars
+  }
+}
+`
+
 export const MENU_BY_TYPE = (category) => gql`
   query {
     findFoodByType(type: "${category}") {

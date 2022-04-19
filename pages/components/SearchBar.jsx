@@ -2,9 +2,9 @@ import React from "react";
 
 import { BiSearchAlt, BiWrench } from "react-icons/bi";
 
-function SearchBar() {
+function SearchBar({ isOpened }) {
   return (
-    <div className="flex items-center justify-between px-5">
+    <div className={` ${isOpened && "translate-x-2/3"} relative z-40 transition-all duration-300 flex bg-white items-center justify-between px-5`} >
       <div className="relative w-full">
         <input
           type="text"

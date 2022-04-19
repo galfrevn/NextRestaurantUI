@@ -1,5 +1,14 @@
 import React from "react";
 
-export default function cart() {
-  return <div>cart</div>;
+import Cart from './components/Cart/Cart'
+
+export default function cart({ isOpened }) {
+
+
+
+  return (
+    <div className={`${isOpened && "translate-x-2/3"} relative z-40 transition-all duration-300`} >
+      <Cart />
+    </div>
+  )
 }

@@ -7,9 +7,9 @@ import {
 } from "react-icons/bi";
 import Link from "next/link";
 
-export default function Navigation({ selected }) {
+export default function Navigation({ selected, isOpened }) {
   return (
-    <div className="fixed bottom-0 left-0 w-full p-6 z-10 bg-white text-customDark rounded-t-xl">
+    <div className={` ${isOpened && "translate-x-2/3 rounded-bl-xl"} transition-all duration-300 fixed bottom-0 left-0 w-full p-6 z-50 bg-white text-customDark rounded-t-xl `}>
       <div className="flex items-center justify-between">
         <Link href="/">
           <div>
