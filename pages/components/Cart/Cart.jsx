@@ -125,7 +125,7 @@ export const CartItem = ({ item, delay, cartItems, setCartItems }) => {
         </Link>
 
         <p className="text-xs text-[#999]">
-          {item.description.match(/\b(\w+\W+)/g).slice(0, 10)}...
+          {item.description.match(/\b(\w+\W+)/g).slice(0, 5)}...
         </p>
         <p className="text-xs font-medium bg-accent p-1 rounded-lg text-white flex items-center justify-center w-12 mt-2">
           ${item.price}

@@ -12,5 +12,5 @@ module.exports = {
       secondary: "#fffcf9",
     },
   },
-  plugins: [require("tailwind-scrollbar")],
+  plugins: [require('tailwind-scrollbar')],
 };

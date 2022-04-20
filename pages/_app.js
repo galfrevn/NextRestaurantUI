@@ -24,25 +24,23 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <CartContextProvider>
-      <FilterContextProvider>
-        <RelativeContainer>
-          <ApolloProvider client={client}>
-            {!router.pathname.includes("/dish/") && (
-              <>
-                <Bar isOpened={isOpened} setIsOpened={setIsOpened} />
-                <SearchBar isOpened={isOpened} />
-              </>
-            )}
-
+      <RelativeContainer>
+        <ApolloProvider client={client}>
+          {!router.pathname.includes("/dish/") && (
+            <>
+              <Bar isOpened={isOpened} setIsOpened={setIsOpened} />
+              <SearchBar isOpened={isOpened} />
+            </>
+          )}
+          <FilterContextProvider>
             <Component {...pageProps} isOpened={isOpened} />
-
-            {!router.pathname.includes("/dish/") && (
-              <Navigation selected={router.pathname} isOpened={isOpened} />
-            )}
-          </ApolloProvider>
-          <Sidebar isOpened={isOpened} setIsOpened={setIsOpened} />
-        </RelativeContainer>
-      </FilterContextProvider>
+          </FilterContextProvider>
+          {!router.pathname.includes("/dish/") && (
+            <Navigation selected={router.pathname} isOpened={isOpened} />
+          )}
+        </ApolloProvider>
+        <Sidebar isOpened={isOpened} setIsOpened={setIsOpened} />
+      </RelativeContainer>
     </CartContextProvider>
   );
 }
