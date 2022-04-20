@@ -26,7 +26,7 @@ export default function Bar({ isOpened, setIsOpened }) {
         <Link href="/admin">
           <img
             className="inline-block h-8 w-8 ring-white"
-            src="./assets/food-drink/svg/hamburger-30703.svg"
+            src="/assets/food-drink/svg/hamburger-30703.svg"
             alt=""
           />
         </Link>

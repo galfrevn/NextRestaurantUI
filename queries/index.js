@@ -30,19 +30,25 @@ export const FOOD_BY_SLUG = (slug) => gql`
 `;
 
 export const FOODS_BY_SLUG = gql`
-query FoodsBySlug($slug: [String]) {
-  foodsBySlug(slug: $slug) {
-    name
-    type
-    price
-    description
-    slug
-    stimatedTime
-    image
-    stars
+  query FoodsBySlug($slug: [String]) {
+    foodsBySlug(slug: $slug) {
+      name
+      type
+      price
+      description
+      slug
+      stimatedTime
+      image
+      stars
+    }
   }
-}
-`
+`;
+
+export const TYPES = gql`
+  query {
+    getTypes
+  }
+`;
 
 export const MENU_BY_TYPE = (category) => gql`
   query {
@@ -74,6 +80,37 @@ export const FIND_BY_TYPE = gql`
       description
       price
       type
+    }
+  }
+`;
+
+export const CREATE_DISH = gql`
+  mutation AddFood(
+    $name: String!
+    $price: Int!
+    $description: String!
+    $type: String
+    $stimatedTime: Int
+    $image: String
+    $stars: Float
+  ) {
+    addFood(
+      name: $name
+      price: $price
+      description: $description
+      type: $type
+      stimatedTime: $stimatedTime
+      image: $image
+      stars: $stars
+    ) {
+      name
+      price
+      type
+      description
+      slug
+      stimatedTime
+      image
+      stars
     }
   }
 `;

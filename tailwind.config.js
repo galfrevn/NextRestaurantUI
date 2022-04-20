@@ -8,6 +8,7 @@ module.exports = {
       accent: "#fecb54",
       customDark: "#707070",
       customLight: "#fff6dd",
+      customGreen: "#8dd471",
       white: "#fff",
       secondary: "#fffcf9",
     },

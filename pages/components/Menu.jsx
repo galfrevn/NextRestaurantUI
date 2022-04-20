@@ -2,7 +2,7 @@ import { useState } from "react";
 import Dropdown from "./Dropdown";
 import ProductCard from "./ProductCard";
 
-export default function Menu({ data, isOpened }) {
+export default function Menu({ data, isOpened, isAdmin }) {
   const [listType, setListType] = useState("grid");
 
   return (
@@ -12,6 +12,7 @@ export default function Menu({ data, isOpened }) {
       } relative z-40 transition-all duration-300 bg-white h-[70vh]`}
     >
       <TopMenu
+        isAdmin={isAdmin}
         isOpened={isOpened}
         listType={listType}
         setListType={setListType}
@@ -42,12 +43,12 @@ export default function Menu({ data, isOpened }) {
   );
 }
 
-export const TopMenu = ({ isOpened, listType, setListType }) => {
+export const TopMenu = ({ listType, setListType, isAdmin }) => {
   return (
     <div
       className={`relative z-40 transition-all duration-300 px-6 py-2 bg-white text-customDark flex items-center justify-between `}
     >
-      <p className="text-sm font-semibold">Categories</p>
+      <p className="text-sm font-semibold"> {isAdmin ? "All dishes" : " Categories"}</p>
       <Dropdown listType={listType} setListType={setListType} />
     </div>
   );

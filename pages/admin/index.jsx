@@ -42,7 +42,7 @@ function Admin({ isOpened }) {
     >
       <div className="px-6 py-10 w-full bg-white">
         <h3 className="text-md font-semibold  text-customDark mb-8">
-          Your cart
+          Admin menu
         </h3>
         {OPTIONS.map((item, index) => (
           <MenuOption item={item} delay={index} key={index} />

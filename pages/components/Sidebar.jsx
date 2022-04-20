@@ -5,12 +5,12 @@ import Link from "next/link";
 
 export default function Sidebar({ isOpened, setIsOpened }) {
   return (
-    <div className="w-2/3 h-full px-6 py-16 absolute left-0 top-0 text-white flex flex-col justify-between">
+    <div className="w-2/3 h-full px-6 py-16 fixed left-0 top-0 text-white flex flex-col justify-between">
       <div>
         <Link href="/">
           <button onClick={() => setIsOpened(!isOpened)}>
             <img
-              src="./assets/food-drink/svg/hamburger-30703.svg"
+              src="/assets/food-drink/svg/hamburger-30703.svg"
               alt="Logo"
               className="w-20 h-20 mb-8"
             />
