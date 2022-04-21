@@ -1,0 +1,28 @@
+{
+  "theme_color": "#fecb54",
+  "lang": "en-US",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "scope": "/",
+  "start_url": "/",
+  "name": "VNRestaurant",
+  "short_name": "VNRestaurant",
+  "description": "VNRestaurant is the best place to find awesome dishes in Argentina | Made by Galfré Valentín",
+  "icons": [
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-256x256.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

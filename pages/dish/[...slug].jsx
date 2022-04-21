@@ -9,6 +9,7 @@ import CartContext from "../../context/CartContext";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Head from 'next/head'
 
 export default function Dish({ findFood }) {
   const router = useRouter();
@@ -18,6 +19,9 @@ export default function Dish({ findFood }) {
 
   return (
     <div className="relative h-screen bg-white z-40">
+      <Head>
+        <title>{findFood.name} | VNRestaurant</title>
+      </Head>
       <ToastContainer limit={1} />
       <BackButton handleBack={handleBack} />
       <DishImage image={findFood.image} />

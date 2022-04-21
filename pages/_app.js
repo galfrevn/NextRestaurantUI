@@ -16,27 +16,39 @@ import client from "../client";
 import { ApolloProvider } from "@apollo/client";
 import Sidebar from "../components/Sidebar";
 import { useState } from "react";
+import Head from "next/head";
 
 function MyApp({ Component, pageProps }) {
   const [isOpened, setIsOpened] = useState(false);
   const router = useRouter();
 
   return (
-    <CartContextProvider>
-      <RelativeContainer>
-        <ApolloProvider client={client}>
-          <Bar isOpened={isOpened} setIsOpened={setIsOpened} />
-          <SearchBar isOpened={isOpened} />
+    <>
+      <Head>
+        <title>
+          Home | VNRestaurant
+        </title>
+        <meta
+          name="description"
+          content="VNRestaurant is the best place to find awesome dishes in Argentina | Made by Galfré Valentín"
+        />
+      </Head>
+      <CartContextProvider>
+        <RelativeContainer>
+          <ApolloProvider client={client}>
+            <Bar isOpened={isOpened} setIsOpened={setIsOpened} />
+            <SearchBar isOpened={isOpened} />
 
-          <FilterContextProvider>
-            <Component {...pageProps} isOpened={isOpened} />
-          </FilterContextProvider>
+            <FilterContextProvider>
+              <Component {...pageProps} isOpened={isOpened} />
+            </FilterContextProvider>
 
-          <Navigation selected={router.pathname} isOpened={isOpened} />
-        </ApolloProvider>
-        <Sidebar isOpened={isOpened} setIsOpened={setIsOpened} />
-      </RelativeContainer>
-    </CartContextProvider>
+            <Navigation selected={router.pathname} isOpened={isOpened} />
+          </ApolloProvider>
+          <Sidebar isOpened={isOpened} setIsOpened={setIsOpened} />
+        </RelativeContainer>
+      </CartContextProvider>
+    </>
   );
 }
 
