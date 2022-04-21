@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { BiChevronLeft } from "react-icons/bi";
 
-import { BLACK_LIST } from "../../utils/index";
+import { BLACK_LIST } from "../utils";
 
 export default function Bar({ isOpened, setIsOpened }) {
   const router = useRouter();
@@ -24,7 +24,7 @@ export default function Bar({ isOpened, setIsOpened }) {
           {router.pathname === "/admin/dishes" ? (
             <button
               className=" p-3 rounded-xl transition-all duration-200 hover:brightness-95"
-              onClick={() => router.back()}
+              onClick={() => router.push("/admin")}
             >
               <BiChevronLeft className=" w-5 h-5 text-customDark" />
             </button>

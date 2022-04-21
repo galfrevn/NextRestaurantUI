@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
-import client from "../../../client";
-import { FOODS_BY_SLUG } from "../../../queries";
+import client from "../../client";
+import { FOODS_BY_SLUG } from "../../queries";
 
 import Link from "next/link";
 
 import { BiX } from "react-icons/bi";
-import CartContext from "../../../context/CartContext";
+import CartContext from "../../context/CartContext";
 
 import { motion } from "framer-motion";
 

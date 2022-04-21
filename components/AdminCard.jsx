@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 
-import { AnimatePresence, motion } from "framer-motion";
-import client from "../../client";
-import { DELETE_DISH } from "../../queries";
+import { motion } from "framer-motion";
+import client from "../client";
+import { DELETE_DISH } from "../queries";
 
 export default function AdminCard({
   delay,
@@ -28,7 +28,7 @@ export default function AdminCard({
         mutation: DELETE_DISH,
         variables: { id },
       })
-      .then((res) => {
+      .then(() => {
         setMenu(data.filter((dish) => dish.slug !== id));
       })
       .catch((err) => {

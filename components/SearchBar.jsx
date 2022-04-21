@@ -3,7 +3,7 @@ import React from "react";
 import { BiSearchAlt } from "react-icons/bi";
 
 import { useRouter } from "next/router";
-import { BLACK_LIST } from "../../utils/index";
+import { BLACK_LIST } from "../utils/index";
 
 function SearchBar({ isOpened }) {
   const router = useRouter();

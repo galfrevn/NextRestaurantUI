@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 
-import Menu from "./components/Menu";
+import Menu from "../components/Menu";
 import { MENU } from "../queries";
 import client from "../client";
 import FilterContext from "../context/FilterContext";
@@ -90,7 +90,7 @@ export const CategorieCard = ({ name, image, code }) => {
   );
 };
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const { data } = await client.query({
     query: MENU,
     fetchPolicy: 'no-cache'

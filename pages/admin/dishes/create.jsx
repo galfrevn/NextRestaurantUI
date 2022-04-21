@@ -8,8 +8,6 @@ import client from "../../../client";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import Counter from "../../components/Counter";
-
 // React Hook Form
 import { useForm } from "react-hook-form";
 
@@ -244,7 +242,7 @@ export const DishImage = ({ image }) => (
   </div>
 );
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const { data } = await client.query({
     query: TYPES,
     fetchPolicy: "no-cache",

@@ -8,7 +8,7 @@ import {
 import Link from "next/link";
 
 import { useRouter } from "next/router";
-import { BLACK_LIST } from "../../utils/index";
+import { BLACK_LIST } from "../utils/index";
 
 export default function Navigation({ selected, isOpened }) {
   const router = useRouter();

@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import client from "../../../client";
 import { MENU } from "../../../queries";
 
-import Menu from "../../components/Menu";
+import Menu from "../../../components/Menu";
 
 const OPTIONS = [
   {
@@ -84,7 +84,7 @@ export const MenuOption = ({ item, delay }) => {
   );
 };
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const { data } = await client.query({
     query: MENU,
     fetchPolicy: "no-cache",

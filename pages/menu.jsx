@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Dropdown from "./components/Dropdown";
+import Dropdown from "../components/Dropdown";
 import { motion } from "framer-motion";
 import Link from "next/link";
 

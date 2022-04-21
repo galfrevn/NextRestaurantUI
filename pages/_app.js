@@ -2,9 +2,9 @@ import { useRouter } from "next/router";
 import { AnimatePresence, motion } from "framer-motion";
 
 // Components
-import Bar from "./components/Bar";
-import Navigation from "./components/Navigation";
-import SearchBar from "./components/SearchBar";
+import Bar from "../components/Bar";
+import Navigation from "../components/Navigation";
+import SearchBar from "../components/SearchBar";
 
 // Filter Context
 import { FilterContextProvider } from "../context/FilterContext";
@@ -14,7 +14,7 @@ import { CartContextProvider } from "../context/CartContext";
 import "../styles/globals.css";
 import client from "../client";
 import { ApolloProvider } from "@apollo/client";
-import Sidebar from "./components/Sidebar";
+import Sidebar from "../components/Sidebar";
 import { useState } from "react";
 
 function MyApp({ Component, pageProps }) {

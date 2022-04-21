@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { useRouter } from "next/router";
 import { BiBasket, BiChevronLeft, BiHeart } from "react-icons/bi";
-import Counter from "../components/Counter";
+import Counter from "../../components/Counter";
 
 import client from "../../client";
 import { gql } from "@apollo/client";
