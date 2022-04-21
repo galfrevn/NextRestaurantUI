@@ -1,1 +1,1 @@
-export const BLACK_LIST = [ "/dish/[...slug]", "/admin/dishes/create" ]
+export const BLACK_LIST = [ "/dish/[...slug]", "/admin/dishes/create", "/admin/dishes/delete" ]

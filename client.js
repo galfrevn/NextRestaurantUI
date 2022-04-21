@@ -1,7 +1,7 @@
 import { ApolloClient, InMemoryCache } from "@apollo/client";
 
 const client = new ApolloClient({
-  uri: "http://localhost:4000/",
+  uri: "https://restaurant-graphql-backend.herokuapp.com/",
   cache: new InMemoryCache(),
 });
 

@@ -12,21 +12,21 @@ const OPTIONS = [
     slug: "create",
     image: "/assets/business/svg/analysis-5039.svg",
     color: "#0ccb86",
-    description: "Take a general look",
+    description: "Fill a form to create a new dish",
   },
   {
     name: "Modify a dish",
     slug: "interactions",
     image: "/assets/business/svg/contribute-5068.svg",
     color: "#fc2f5e",
-    description: "Discover how the people uses the app",
+    description: "Modify the properties of a dish",
   },
   {
     name: "Delete a dish",
-    slug: "dishes",
+    slug: "delete",
     image: "/assets/business/svg/business-5033.svg",
     color: "#1bcfdb",
-    description: "Manage the dishes that are shown",
+    description: "Delete a disgusting dish",
   },
 ];
 
@@ -46,13 +46,13 @@ export default function Dishes({ isOpened, data }) {
           <h3 className="text-md font-semibold  text-customDark mb-8">
             Manage dishes
           </h3>
-          {OPTIONS.map((item, index) => (
-            <MenuOption item={item} delay={index} key={index} />
-          ))}
+          <MenuOption item={OPTIONS[0]} delay={0} key={0} />
+          <MenuOption item={OPTIONS[1]} delay={1} key={1} />
+          <MenuOption item={OPTIONS[2]} delay={2} key={2} />
         </div>
       </div>
       <div>
-        <Menu data={menu} isOpened={isOpened} isAdmin />
+        <Menu data={menu} isOpened={isOpened} />
       </div>
     </div>
   );
@@ -62,6 +62,7 @@ export const MenuOption = ({ item, delay }) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
+      viewport={{ once: true }}
       whileInView={{ opacity: 1, y: 0, transition: { delay: 0.05 * delay } }}
       className="w-full p-2  soft-shadow relative rounded-lg mb-4"
       style={{ backgroundColor: item.color }}

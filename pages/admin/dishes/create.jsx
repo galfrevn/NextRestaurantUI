@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { BiChevronLeft, BiBasket, BiRightArrowCircle } from "react-icons/bi";
+import { BiChevronLeft, BiRightArrowCircle } from "react-icons/bi";
 import { CREATE_DISH, TYPES } from "../../../queries";
 
 import { useRouter } from "next/router";
@@ -19,6 +19,7 @@ const ERROR_IMG =
 export default function Create({ isOpened, data }) {
   const [source, setSource] = useState(ERROR_IMG);
   const [selected, setSelected] = useState(data.getTypes[0]);
+  const [loading, setLoading] = useState(false);
 
   const router = useRouter();
 
@@ -26,7 +27,11 @@ export default function Create({ isOpened, data }) {
     setSource(document.getElementById("image").value);
   };
 
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   function getRandomFloat(min, max, decimals) {
     const str = (Math.random() * (max - min) + min).toFixed(decimals);
@@ -34,6 +39,7 @@ export default function Create({ isOpened, data }) {
   }
 
   const onSubmit = async (x) => {
+    setLoading(true);
     const newProduct = {
       ...x,
       type: selected,
@@ -41,7 +47,7 @@ export default function Create({ isOpened, data }) {
       stars: getRandomFloat(1, 5, 1),
     };
 
-    const { data } = await client
+    await client
       .mutate({
         mutation: CREATE_DISH,
         fetchPolicy: "no-cache",
@@ -56,22 +62,28 @@ export default function Create({ isOpened, data }) {
           stimatedTime: parseInt(newProduct.stimatedTime),
         },
       })
-      .then(console.log("Created"));
+      .then(() => {
+        setLoading(false);
+        notify();
+        router.push("/admin/dishes");
+      });
+  };
+
+  const notify = () => {
+    toast.success("Dish created successfully", {
+      position: "top-right",
+      autoClose: 700,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: false,
+      draggable: false,
+      progress: undefined,
+    });
+    toast.clearWaitingQueue();
   };
 
   const handleBack = () => {
     router.back();
-  };
-
-  const temp = {
-    name: "",
-    description: "",
-    price: 220,
-    image: "",
-    type: "",
-    slug: "",
-    stars: 2.4,
-    stimatedTime: 10,
   };
 
   return (
@@ -87,25 +99,114 @@ export default function Create({ isOpened, data }) {
             <ToastContainer limit={1} />
             <BackButton handleBack={handleBack} />
             <DishImage image={source} />
-            <div className="relative mx-8">
-              <input
-                id="image"
-                type="text"
-                placeholder="Image URL"
-                className="w-full text-xs text-customDark bg-[#f8f8f8] pr-12 focus:outline-none rounded-xl placeholder:font-medium font-medium py-5 px-6 mt-4"
-                {...register("image", {
-                  required: true,
-                })}
-              />
-              <button className="absolute right-4 top-8" onClick={setImage}>
-                <BiRightArrowCircle
-                  aria-label="Set image"
-                  className="ml-2 w-5 h-5 text-customDark"
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <div className="relative mx-8">
+                <input
+                  id="image"
+                  type="text"
+                  placeholder="Image URL"
+                  className="w-full text-xs text-customDark placeholder:text-[#d1d1d1] bg-[#f8f8f8] pr-12 focus:outline-none rounded-xl placeholder:font-medium font-medium py-5 px-6 mt-4"
+                  {...register("image", {
+                    required: true,
+                  })}
                 />
-              </button>
-            </div>
+                <button className="absolute right-4 top-8" onClick={setImage}>
+                  <BiRightArrowCircle
+                    aria-label="Set image"
+                    className="ml-2 w-5 h-5 text-customDark"
+                  />
+                </button>
+              </div>
 
-            <Information data={temp} />
+              <div className="text-accent text-[11px] px-10  ">
+                {errors.image?.type === "required" && "An Image is required"}
+              </div>
+
+              <div className="absolute bottom-0 w-screen left-0 h-auto bg-customLight rounded-t-2xl ">
+                <div className="w-full h-auto pb-12 flex px-6 flex-col items-center text-customDark">
+                  <div className="bg-accent py-2 px-1 rounded-full text-sm font-semibold text-white -translate-y-5">
+                    <input
+                      type="number"
+                      placeholder="100"
+                      className="text-xs text-white  focus:outline-none placeholder:font-medium font-medium placeholder:text-customDark rounded-xl bg-accent w-16 text-center "
+                      {...register("price", {
+                        required: true,
+                      })}
+                    />
+                  </div>
+                  <div className="bg-accent w-10 h-1 mt-1 mb-6 rounded-full"></div>
+                  <div className="flex flex-col items-start w-full">
+                    <input
+                      type="text"
+                      placeholder="Dish name"
+                      className="w-full text-xs text-customDark border-2 border-customLight focus:outline-accent placeholder:font-medium font-medium placeholder:text-[#d1d1d1] rounded-xl py-3 px-6"
+                      {...register("name", {
+                        required: true,
+                      })}
+                    />
+                    <div className="text-accent text-[11px]  ">
+                      {errors.name?.type === "required" && "A name is required"}
+                    </div>
+
+                    <textarea
+                      rows={3}
+                      placeholder="Dish description (at least 10 words)"
+                      className="w-full text-xs text-customDark border-2 border-customLight focus:outline-accent placeholder:font-medium font-medium placeholder:text-[#d1d1d1] rounded-xl py-3 mt-2 px-6"
+                      {...register("description", {
+                        required: true,
+                      })}
+                    />
+                    <div className="text-accent text-[11px]  ">
+                      {errors.name?.type === "required" &&
+                        "A description is required"}
+                    </div>
+                  </div>
+
+                  <div className="flex mt-4 w-full">
+                    <select
+                      onChange={(e) => setSelected(e.target.value)}
+                      className="appearance-none text-center focus:outline-accent bg-white py-3 px-5 text-xs font-medium rounded-xl text-customDark"
+                    >
+                      {data.getTypes.map((item, index) => (
+                        <option value={item} key={index}>
+                          {item}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="flex text-sm font-semibold mt-6 items-center">
+                    <img
+                      src="/assets/clock.svg"
+                      alt="Timer"
+                      className="w-5 h-5 mr-1"
+                    />
+                    <p>
+                      <span> Time: 0-</span>
+                      <input
+                        type="number"
+                        placeholder="10"
+                        max={99}
+                        className=" text-customDark focus:outline-none placeholder:font-semibold text-sm placeholder:text-sm w-6 placeholder:text-[#d1d1d1] font-semibold rounded-xl bg-customLight text-center "
+                        {...register("stimatedTime", {
+                          required: true,
+                        })}
+                      />
+                      <span>min</span>
+                    </p>
+                  </div>
+                </div>
+                <div className="bg-white w-full z-10 flex flex-col items-end py-4 px-8 rounded-t-xl soft-shadow-vertical ">
+                  <button
+                    type="submit"
+                    className="bg-accent hover:brightness-105 transition-all duration-200 px-10 py-3 rounded-xl flex items-center text-white font-semibold text-sm"
+                  >
+                    Save and Create{" "}
+                    <BiRightArrowCircle className="ml-2 w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            </form>
           </div>
         </div>
       </div>
@@ -123,7 +224,7 @@ export const BackButton = ({ handleBack }) => (
 );
 
 export const DishImage = ({ image }) => (
-  <div className="pt-24 px-16">
+  <div className="pt-10 px-16">
     <img
       src={image}
       alt=""
@@ -140,74 +241,6 @@ export const DishImage = ({ image }) => (
         });
       }}
     />
-  </div>
-);
-
-export const Information = ({ data }) => (
-  <>
-    <div className="absolute bottom-0 w-screen left-0 h-1/2 bg-customLight rounded-t-xl">
-      <div className="w-full h-auto pb-12 flex flex-col items-center text-customDark">
-        <div className="bg-accent py-2 px-6 rounded-full text-sm font-semibold text-white -translate-y-5">
-          ${data.price.toFixed(2)}
-        </div>
-        <div className="bg-accent w-10 h-1 mt-1 mb-6 rounded-full"></div>
-        <h3 className="text-lg font-semibold">{data.name} </h3>
-        <p className="text-center text-sm font-medium mt-4 px-6 ">
-          {data.description}
-        </p>
-
-        <div className="flex text-sm font-semibold mt-6 items-center">
-          <img src="/assets/clock.svg" alt="Timer" className="w-5 h-5 mr-1" />
-          <p>
-            <span> Time: 0-</span>
-            {data.stimatedTime} <span>min</span>
-          </p>
-        </div>
-      </div>
-      <BottomOptions data={data} />
-    </div>
-  </>
-);
-
-export const BottomOptions = ({ data }) => {
-  const notify = () => {
-    toast.info("🍔 added to cart", {
-      position: "top-right",
-      autoClose: 700,
-      hideProgressBar: false,
-      closeOnClick: false,
-      pauseOnHover: false,
-      draggable: false,
-      progress: undefined,
-    });
-    toast.clearWaitingQueue();
-  };
-
-  return (
-    <div className="bg-white w-full z-10 flex flex-col items-end py-4 px-8 rounded-t-xl soft-shadow-vertical ">
-      <div className="flex items-center w-full justify-between mb-5">
-        <Counter />
-        <div className="flex space-x-3">
-          <Rating stars={data.stars} />
-        </div>
-      </div>
-
-      <button
-        className="bg-accent hover:brightness-105 transition-all duration-200 px-10 py-3 rounded-xl flex items-center text-white font-semibold text-sm"
-        onClick={() => {
-          notify();
-        }}
-      >
-        Add to card <BiBasket className="ml-2 w-4 h-4" />
-      </button>
-    </div>
-  );
-};
-
-export const Rating = ({ stars }) => (
-  <div className="flex items-center bg-[#f1f1f1] p-2 px-4 rounded-md">
-    <img src="/assets/star.svg" alt="" />
-    <p className="text-sm text-customDark font-semibold ml-2"> {stars} </p>
   </div>
 );
 

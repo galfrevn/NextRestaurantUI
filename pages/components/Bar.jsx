@@ -9,8 +9,6 @@ import { BLACK_LIST } from "../../utils/index";
 export default function Bar({ isOpened, setIsOpened }) {
   const router = useRouter();
 
-  console.log(router.pathname);
-
   const handleClick = () => {
     setIsOpened(!isOpened);
   };
@@ -42,7 +40,7 @@ export default function Bar({ isOpened, setIsOpened }) {
           )}
 
           <div className="flex -space-x-2 overflow-hidden">
-            <Link href="/admin">
+            <Link href={router.pathname === "/admin"  ? "/" : "/admin"}>
               <img
                 className="inline-block h-8 w-8 ring-white"
                 src="/assets/food-drink/svg/hamburger-30703.svg"

@@ -68,7 +68,7 @@ export default function Home({ data, isOpened }) {
           <CategorieCard key={index} {...categorie} />
         ))}
       </div>
-      <Menu data={menu} isOpened={isOpened} />
+      <Menu data={menu} isOpened={isOpened} isAdmin={false} setMenu={setMenu} />
     </>
   );
 }

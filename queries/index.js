@@ -84,6 +84,16 @@ export const FIND_BY_TYPE = gql`
   }
 `;
 
+export const DELETE_DISH = gql`
+  mutation ($id: String!) {
+    deleteFood(slug: $id) {
+      name
+      price
+      description
+    }
+  }
+`;
+
 export const CREATE_DISH = gql`
   mutation AddFood(
     $name: String!

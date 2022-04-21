@@ -1,8 +1,9 @@
 import { useState } from "react";
+import AdminCard from "./AdminCard";
 import Dropdown from "./Dropdown";
 import ProductCard from "./ProductCard";
 
-export default function Menu({ data, isOpened, isAdmin }) {
+export default function Menu({ data, isOpened, isAdmin, setMenu }) {
   const [listType, setListType] = useState("grid");
 
   return (
@@ -24,6 +25,21 @@ export default function Menu({ data, isOpened, isAdmin }) {
       >
         {!data ? (
           <div>Cargando... </div>
+        ) : isAdmin ? (
+          data.map((food, index) => (
+            <AdminCard
+              setMenu={setMenu}
+              data={data}
+              style={listType}
+              key={index}
+              delay={index}
+              name={food.name}
+              slug={food.slug}
+              image={food.image}
+              description={food.description}
+              price={food.price}
+            />
+          ))
         ) : (
           data.map((food, index) => (
             <ProductCard
@@ -48,7 +64,9 @@ export const TopMenu = ({ listType, setListType, isAdmin }) => {
     <div
       className={`relative z-40 transition-all duration-300 px-6 py-2 bg-white text-customDark flex items-center justify-between `}
     >
-      <p className="text-sm font-semibold"> {isAdmin ? "All dishes" : " Categories"}</p>
+      <p className="text-sm font-semibold">
+        {isAdmin ? "All dishes" : " Categories"}
+      </p>
       <Dropdown listType={listType} setListType={setListType} />
     </div>
   );
