@@ -18,26 +18,21 @@ import Sidebar from "./components/Sidebar";
 import { useState } from "react";
 
 function MyApp({ Component, pageProps }) {
-  const router = useRouter();
-
   const [isOpened, setIsOpened] = useState(false);
+  const router = useRouter();
 
   return (
     <CartContextProvider>
       <RelativeContainer>
         <ApolloProvider client={client}>
-          {!router.pathname.includes("/dish/") && (
-            <>
-              <Bar isOpened={isOpened} setIsOpened={setIsOpened} />
-              <SearchBar isOpened={isOpened} />
-            </>
-          )}
+          <Bar isOpened={isOpened} setIsOpened={setIsOpened} />
+          <SearchBar isOpened={isOpened} />
+
           <FilterContextProvider>
             <Component {...pageProps} isOpened={isOpened} />
           </FilterContextProvider>
-          {!router.pathname.includes("/dish/") && (
-            <Navigation selected={router.pathname} isOpened={isOpened} />
-          )}
+
+          <Navigation selected={router.pathname} isOpened={isOpened} />
         </ApolloProvider>
         <Sidebar isOpened={isOpened} setIsOpened={setIsOpened} />
       </RelativeContainer>
