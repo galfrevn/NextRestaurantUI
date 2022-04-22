@@ -7,6 +7,7 @@ export default function Dropdown({ listType, setListType }) {
     <div className="relative flex space-x-4 items-center ">
       <button onClick={() => setListType("list")}>
         <BiListUl
+          aria-label="List mode"
           className={`${
             listType === "list" ? "text-accent" : "text-[#999]"
           } w-[1.4rem] h-[1.4rem] transition-all duration-200 ease-in-out`}
@@ -14,6 +15,7 @@ export default function Dropdown({ listType, setListType }) {
       </button>
       <button onClick={() => setListType("grid")}>
         <BiGridAlt
+          aria-label="Grid mode"
           className={`${
             listType === "grid" ? "text-accent" : "text-[#999]"
           } w-[1.1rem] h-[1.1rem] transition-all duration-200 ease-in-out`}

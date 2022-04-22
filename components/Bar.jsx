@@ -23,6 +23,7 @@ export default function Bar({ isOpened, setIsOpened }) {
         >
           {router.pathname === "/admin/dishes" ? (
             <button
+              aria-label="Go back"
               className=" p-3 rounded-xl transition-all duration-200 hover:brightness-95"
               onClick={() => router.push("/admin")}
             >
