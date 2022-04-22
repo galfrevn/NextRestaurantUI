@@ -58,6 +58,15 @@ export default function Cart() {
                 delay={index}
               />
             ))}
+            <div className="bg-accent w-full py-4 px-6 text-sm rounded-xl flex items-center justify-between text-white font-semibold">
+              <p>Total: </p>
+              <p>
+                $
+                {menu.reduce((acc, item) => {
+                  return acc + item.price;
+                }, 0)}.00
+              </p>
+            </div>
           </div>
         ) : (
           <NoItems />
