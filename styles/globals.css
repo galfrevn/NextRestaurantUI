@@ -13,7 +13,7 @@ body {
   background-color: #fff;
   background-size: cover;
   background-repeat: repeat-y;
-  font-family: Poppins, sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 a {
@@ -23,7 +23,7 @@ a {
 
 * {
   box-sizing: border-box;
-  font-family: Poppins, sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 .soft-shadow {
