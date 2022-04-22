@@ -35,7 +35,7 @@ function MyApp({ Component, pageProps }) {
           content="VNRestaurant is the best place to find awesome dishes in Argentina | Made by Galfré Valentín"
         />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin />
         <link
           href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap"
           rel="stylesheet"
