@@ -12,11 +12,14 @@ import { CartContextProvider } from "../context/CartContext";
 
 // Styles
 import "../styles/globals.css";
-import client from "../client";
-import { ApolloProvider } from "@apollo/client";
-import Sidebar from "../components/Sidebar";
 import { useState } from "react";
 import Head from "next/head";
+
+import dynamic from "next/dynamic";
+
+const DynamicSidebar = dynamic(() => import("../components/Sidebar"), {
+  loading: () => <p>...</p>,
+});
 
 function MyApp({ Component, pageProps }) {
   const [isOpened, setIsOpened] = useState(false);
@@ -25,9 +28,8 @@ function MyApp({ Component, pageProps }) {
   return (
     <>
       <Head>
-        <title>
-          Home | VNRestaurant
-        </title>
+        <title>Home | VNRestaurant</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta
           name="description"
           content="VNRestaurant is the best place to find awesome dishes in Argentina | Made by Galfré Valentín"
@@ -35,17 +37,15 @@ function MyApp({ Component, pageProps }) {
       </Head>
       <CartContextProvider>
         <RelativeContainer>
-          <ApolloProvider client={client}>
-            <Bar isOpened={isOpened} setIsOpened={setIsOpened} />
+          <DynamicSidebar isOpened={isOpened} setIsOpened={setIsOpened} />
+          <Bar isOpened={isOpened} setIsOpened={setIsOpened} />
+
+          <FilterContextProvider>
             <SearchBar isOpened={isOpened} />
+            <Component {...pageProps} isOpened={isOpened} />
+          </FilterContextProvider>
 
-            <FilterContextProvider>
-              <Component {...pageProps} isOpened={isOpened} />
-            </FilterContextProvider>
-
-            <Navigation selected={router.pathname} isOpened={isOpened} />
-          </ApolloProvider>
-          <Sidebar isOpened={isOpened} setIsOpened={setIsOpened} />
+          <Navigation selected={router.pathname} isOpened={isOpened} />
         </RelativeContainer>
       </CartContextProvider>
     </>

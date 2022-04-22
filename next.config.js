@@ -6,14 +6,15 @@ module.exports = withPWA({
     dest: "public",
     register: true,
     skipWaiting: true,
+    disable: process.env.NODE_ENV === "development",
   },
   images: {
     domains: [
-      "crombie.dev",
-      "images.prismic.io",
-      "upload.wikimedia.org",
-      "media2.giphy.com",
-      "media.graphassets.com"
+      "cache-backend-mcd.mcdonaldscupones.com",
+      "d1csarkz8obe9u.cloudfront.net",
+      "i.pinimg.com",
+      "www.bizadmark.com",
+      "s3-eu-central-1.amazonaws.com"
     ],
   },
 });

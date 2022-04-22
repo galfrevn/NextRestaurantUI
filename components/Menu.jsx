@@ -1,10 +1,12 @@
 import { useState } from "react";
-import AdminCard from "./AdminCard";
-import Dropdown from "./Dropdown";
-import ProductCard from "./ProductCard";
+
+import dynamic from "next/dynamic";
+const ProductCard = dynamic(() => import("./ProductCard"));
+const AdminCard = dynamic(() => import("./AdminCard"));
+const Dropdown = dynamic(() => import("./Dropdown"));
 
 export default function Menu({ data, isOpened, isAdmin, setMenu }) {
-  const [listType, setListType] = useState("grid");
+  const [listType, setListType] = useState("list");
 
   return (
     <div

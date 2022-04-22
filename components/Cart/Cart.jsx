@@ -139,7 +139,6 @@ export const CartItem = ({ item, delay, cartItems, setCartItems }) => {
           handleDelete();
         }}
       >
-        {" "}
         <BiX size={18} color="#BD0000" />{" "}
       </button>
     </motion.div>

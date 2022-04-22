@@ -7,6 +7,8 @@ import FilterContext from "../../../context/FilterContext";
 import { useRouter } from "next/router";
 import { BiChevronLeft } from "react-icons/bi";
 
+import Image from 'next/image'
+
 const categories = [
   {
     name: "Hamburgers",
@@ -50,14 +52,14 @@ const categories = [
 
 export default function Delete({ data, isOpened }) {
   const mainMenu = data.foods;
-  const router = useRouter()
+  const router = useRouter();
 
   const [menu, setMenu] = useState(mainMenu);
   const { filter } = useContext(FilterContext);
 
   const handleBack = () => {
-    router.back()
-  }
+    router.back();
+  };
 
   useEffect(() => {
     if (filter !== "") {
@@ -112,13 +114,18 @@ export const CategorieCard = ({ name, image, code }) => {
         filter === code ? setFilter("") : setFilter(code);
       }}
     >
-      <img src={image} alt={name} className="w-4 h-4 mr-2" />
-      {name}
+      <Image src={image} alt={name} layout="fixed" width={16} height={16} />
+      <p className="ml-2">{name}</p>
     </button>
   );
 };
 
-export async function getServerSideProps() {
+export async function getServerSideProps({ req, res }) {
+
+  res.setHeader(
+    'Cache-Control',
+    'public, s-maxage=10, stale-while-revalidate=59'
+  )
   const { data } = await client.query({
     query: MENU,
     fetchPolicy: "no-cache",

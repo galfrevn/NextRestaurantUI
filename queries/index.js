@@ -124,3 +124,18 @@ export const CREATE_DISH = gql`
     }
   }
 `;
+
+export const SEARCH_FOODS = gql`
+  query Query($search: String) {
+    searchFoods(search: $search) {
+      name
+      type
+      price
+      description
+      slug
+      stimatedTime
+      image
+      stars
+    }
+  }
+`;

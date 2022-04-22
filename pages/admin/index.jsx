@@ -2,32 +2,34 @@ import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
+import Image from 'next/image'
+
 const OPTIONS = [
   {
     name: "Dashboard",
     slug: "dashboard",
-    image: "assets/business/svg/analysis-5039.svg",
+    image: "/assets/business/svg/analysis-5039.svg",
     color: "#0ccb86",
     description: "Take a general look"
   },
   {
     name: "Dishes",
     slug: "dishes",
-    image: "assets/business/svg/business-5033.svg",
+    image: "/assets/business/svg/business-5033.svg",
     color: "#1bcfdb",
     description: "Manage the dishes that are shown"
   },
   {
     name: "Interactions",
     slug: "interactions",
-    image: "assets/business/svg/contribute-5068.svg",
+    image: "/assets/business/svg/contribute-5068.svg",
     color: "#fc2f5e",
     description: "Discover how the people uses the app"
   },
   {
     name: "Coming soon",
     slug: "",
-    image: "assets/business/svg/brain-5041.svg",
+    image: "/assets/business/svg/brain-5041.svg",
     color: "#ffa300",
     description: "More funtionalities will be added :)"
   },
@@ -62,14 +64,17 @@ export const MenuOption = ({ item, delay }) => {
       className="w-full p-2  soft-shadow relative rounded-lg mb-4"
       style={{ backgroundColor: item.color }}
     >
-      <Link href={`admin/${item.slug}`}>
+      <Link href={`admin/${item.slug}`} passHref={false} >
         <div className="flex items-center">
-          <img
+          <Image
             src={item.image}
             alt={item.name}
-            className="w-20 h-[5rem] p-1.5 rounded-lg mr-4"
+            layout="fixed"
+            width={80}
+            height={80}
+            className="p-1.5 rounded-lg"
           />
-          <div className="text-white flex flex-col">
+          <div className="text-white flex flex-col ml-4">
             <h3 className="font-semibold text-sm ">{item.name} </h3>
             <p className="text-xs" >{item.description} </p>
           </div>

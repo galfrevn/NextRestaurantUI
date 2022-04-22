@@ -19,7 +19,7 @@ export default function Bar({ isOpened, setIsOpened }) {
         <div
           className={`${
             isOpened && "translate-x-2/3 rounded-tl-2xl"
-          } transition-all duration-300 bg-white w-full py-6 px-2.5 pr-6 flex justify-between items-center relative z-40 `}
+          } transition-all duration-300 bg-white w-full py-6 px-2.5 pr-6 flex justify-between items-center relative z-50 `}
         >
           {router.pathname === "/admin/dishes" ? (
             <button

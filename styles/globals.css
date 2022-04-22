@@ -13,6 +13,7 @@ body {
   background-color: #fff;
   background-size: cover;
   background-repeat: repeat-y;
+  font-family: Poppins, sans-serif;
 }
 
 a {
@@ -44,4 +45,3 @@ a {
 .Toastify__toast-body svg {
   width: 16px;
 }
-

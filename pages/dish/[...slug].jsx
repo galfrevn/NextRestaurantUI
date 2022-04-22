@@ -9,7 +9,9 @@ import CartContext from "../../context/CartContext";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Head from 'next/head'
+import Head from "next/head";
+
+import Image from "next/image";
 
 export default function Dish({ findFood }) {
   const router = useRouter();
@@ -40,8 +42,16 @@ export const BackButton = ({ handleBack }) => (
 );
 
 export const DishImage = ({ image }) => (
-  <div className="pt-24 px-16 ">
-    <img src={image} alt="" />
+  <div className="pt-32 px-16 ">
+    <Image
+      src={image}
+      alt="VNRestaurant dish"
+      layout="responsive"
+      width={"100%"}
+      height={"80%"}
+      placeholder="blur"
+      blurDataURL={image}
+    />
   </div>
 );
 
@@ -59,8 +69,14 @@ export const Information = ({ data }) => (
         </p>
 
         <div className="flex text-sm font-semibold mt-6 items-center">
-          <img src="../assets/clock.svg" alt="Timer" className="w-5 h-5 mr-1" />
-          <p>
+          <Image
+            src="/assets/clock.svg"
+            alt="Timer"
+            layout="fixed"
+            width={20}
+            height={20}
+          />
+          <p className="ml-1">
             <span> Time: 0-</span>
             {data.stimatedTime} <span>min</span>
           </p>
@@ -84,8 +100,8 @@ export const BottomOptions = ({ data }) => {
       draggable: false,
       progress: undefined,
     });
-  toast.clearWaitingQueue()
-}
+    toast.clearWaitingQueue();
+  };
 
   const handleAddToCard = () => {
     cartItems.push(data.slug);
@@ -123,7 +139,13 @@ export const FavButton = () => (
 
 export const Rating = ({ stars }) => (
   <div className="flex items-center bg-[#f1f1f1] p-2 px-4 rounded-md">
-    <img src="../assets/star.svg" alt="" />
+    <Image
+      src="/assets/star.svg"
+      alt="Star"
+      layout="fixed"
+      width={20}
+      height={20}
+    />
     <p className="text-sm text-customDark font-semibold ml-2"> {stars} </p>
   </div>
 );

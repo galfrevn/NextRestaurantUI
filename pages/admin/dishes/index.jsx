@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import client from "../../../client";
 import { MENU } from "../../../queries";
 
-import Menu from "../../../components/Menu";
+import Image from 'next/image'
+import dynamic from 'next/dynamic'
+
+const Menu = dynamic(() => import("../../../components/Menu"));
 
 const OPTIONS = [
   {
@@ -33,8 +36,6 @@ const OPTIONS = [
 export default function Dishes({ isOpened, data }) {
   const mainMenu = data.foods;
 
-  const [menu, setMenu] = useState(mainMenu);
-
   return (
     <div className="h-[80vh]">
       <div
@@ -52,7 +53,7 @@ export default function Dishes({ isOpened, data }) {
         </div>
       </div>
       <div>
-        <Menu data={menu} isOpened={isOpened} />
+        <Menu data={mainMenu} isOpened={isOpened} />
       </div>
     </div>
   );
@@ -67,14 +68,17 @@ export const MenuOption = ({ item, delay }) => {
       className="w-full p-2  soft-shadow relative rounded-lg mb-4"
       style={{ backgroundColor: item.color }}
     >
-      <Link href={`dishes/${item.slug}`}>
+      <Link href={`dishes/${item.slug}`} passHref={false}>
         <div className="flex items-center">
-          <img
+          <Image
             src={item.image}
             alt={item.name}
-            className="w-20 h-[5rem] p-1.5 rounded-lg mr-4"
+            layout="fixed"
+            width={80}
+            height={80}
+            className="p-1.5 rounded-lg"
           />
-          <div className="text-white flex flex-col">
+          <div className="text-white flex flex-col ml-4">
             <h3 className="font-semibold text-sm ">{item.name} </h3>
             <p className="text-xs">{item.description} </p>
           </div>
@@ -84,7 +88,11 @@ export const MenuOption = ({ item, delay }) => {
   );
 };
 
-export async function getServerSideProps() {
+export async function getServerSideProps({ req, res }) {
+  res.setHeader(
+    'Cache-Control',
+    'public, s-maxage=10, stale-while-revalidate=59'
+  )
   const { data } = await client.query({
     query: MENU,
     fetchPolicy: "no-cache",
