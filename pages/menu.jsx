@@ -23,7 +23,7 @@ export default function menu({ isOpened }) {
         } transition-all duration-300 pt-3 px-6 pb-20 space-y-5 relative z-40 bg-white`}
       >
         {IMAGES.map((image, index) => (
-          <div className="w-full h-auto" >
+          <div className="w-full h-auto" key={index} >
             a
           </div>
         ))}
