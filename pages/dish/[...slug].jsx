@@ -104,7 +104,7 @@ export const BottomOptions = ({ data }) => {
   };
 
   const handleAddToCard = () => {
-    const cartItems = JSON.parse(localStorage.getItem("cartItems"));
+    const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
     cartItems.push(data.slug);
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
   };

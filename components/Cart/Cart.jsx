@@ -13,7 +13,7 @@ export default function Cart() {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      if (JSON.parse(localStorage.getItem("cartItems")).length || [] > 0) {
+      if (JSON.parse(localStorage.getItem("cartItems")) || [].length  > 0) {
         const { data } = await client.query({
           query: FOODS_BY_SLUG,
           variables: { slug: JSON.parse(localStorage.getItem("cartItems")) },
