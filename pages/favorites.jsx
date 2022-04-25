@@ -4,7 +4,7 @@ import { FOODS_BY_SLUG } from "../queries";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
-export default function favorites({ isOpened }) {
+export default function Favorites({ isOpened }) {
   const [menu, setMenu] = useState([]);
   const [loading, setLoading] = useState(true);
   const [update, setUpdate] = useState(0);
