@@ -1,9 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import Menu from "../../../components/Menu";
 import { MENU } from "../../../queries";
 import client from "../../../client";
-import FilterContext from "../../../context/FilterContext";
 import { useRouter } from "next/router";
 import { BiChevronLeft } from "react-icons/bi";
 
@@ -55,7 +54,7 @@ export default function Delete({ data, isOpened }) {
   const router = useRouter();
 
   const [menu, setMenu] = useState(mainMenu);
-  const { filter } = useContext(FilterContext);
+  const [filter, setFilter] = useState("")
 
   const handleBack = () => {
     router.back();
@@ -83,7 +82,7 @@ export default function Delete({ data, isOpened }) {
         </h3>
         <div className="pl-6 py-6 w-full flex items-center space-x-5 overflow-x-scroll scrollbar-none pr-4 ">
           {categories.map((categorie, index) => (
-            <CategorieCard key={index} {...categorie} />
+            <CategorieCard key={index} {...categorie} filter={filter} setFilter={setFilter} />
           ))}
         </div>
       </div>
@@ -101,8 +100,8 @@ export const BackButton = ({ handleBack }) => (
   </button>
 );
 
-export const CategorieCard = ({ name, image, code }) => {
-  const { filter, setFilter } = useContext(FilterContext);
+export const CategorieCard = ({ name, image, code, filter, setFilter }) => {
+  
   return (
     <button
       className={` ${

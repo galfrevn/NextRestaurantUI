@@ -31,7 +31,7 @@ a {
 }
 
 .soft-shadow-vertical {
-  filter: drop-shadow(5px -27px 38px rgba(255, 228, 73, 0.11));
+  filter: drop-shadow(5px -27px 38px rgba(170, 155, 68, 0.253));
 }
 
 .soft-shadow-red {

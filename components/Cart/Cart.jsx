@@ -1,33 +1,24 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import client from "../../client";
 import { FOODS_BY_SLUG } from "../../queries";
-
 import Link from "next/link";
-
 import { BiX } from "react-icons/bi";
-import CartContext from "../../context/CartContext";
-
 import { motion } from "framer-motion";
-
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 export default function Cart() {
   const [menu, setMenu] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { cartItems, setCartItems } = useContext(CartContext);
+  const [update, setUpdate] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-
-      if (cartItems.length > 0) {
+      if (JSON.parse(localStorage.getItem("cartItems")).length > 0) {
         const { data } = await client.query({
           query: FOODS_BY_SLUG,
-          variables: { slug: cartItems },
+          variables: { slug: JSON.parse(localStorage.getItem("cartItems")) },
           fetchPolicy: "no-cache",
         });
-
         setMenu(data.foodsBySlug);
       } else {
         setMenu([]);
@@ -36,11 +27,10 @@ export default function Cart() {
     };
 
     fetchData();
-  }, [cartItems]);
+  }, [update]);
 
   return (
     <>
-      <ToastContainer limit={3} />
       <div className="px-6 py-10 w-full bg-white">
         <h3 className="text-md font-semibold  text-customDark mb-8">
           Your cart
@@ -51,11 +41,11 @@ export default function Cart() {
           <div className="bg-white h-screen">
             {menu.map((item, index) => (
               <CartItem
-                cartItems={cartItems}
-                setCartItems={setCartItems}
                 key={index}
                 item={item}
                 delay={index}
+                update={update}
+                setUpdate={setUpdate}
               />
             ))}
             <div className="bg-accent w-full py-4 px-6 text-sm rounded-xl flex items-center justify-between text-white font-semibold">
@@ -64,7 +54,8 @@ export default function Cart() {
                 $
                 {menu.reduce((acc, item) => {
                   return acc + item.price;
-                }, 0)}.00
+                }, 0)}
+                .00
               </p>
             </div>
           </div>
@@ -97,29 +88,20 @@ export const LoadingText = () => {
   );
 };
 
-export const CartItem = ({ item, delay, cartItems, setCartItems }) => {
+export const CartItem = ({ item, delay, update, setUpdate }) => {
   const handleDelete = () => {
-    const newCartItems = cartItems.filter((i) => i !== item.slug);
-    setCartItems(newCartItems);
-  };
-
-  const notify = () => {
-    toast.error("🍔 removed successfully", {
-      position: "top-right",
-      autoClose: 700,
-      hideProgressBar: false,
-      closeOnClick: false,
-      pauseOnHover: false,
-      draggable: false,
-      progress: undefined,
-    });
+    const newCartItems = JSON.parse(localStorage.getItem("cartItems")).filter(
+      (i) => i !== item.slug
+    );
+    localStorage.setItem("cartItems", JSON.stringify(newCartItems));
+    setUpdate(update + 1);
   };
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0, transition: { delay: 0.05 * delay } }}
-      className="w-full p-2 flex items-center soft-shadow relative bg-white rounded-lg mb-4"
+      className="w-full p-2 flex items-center border-[1px] border-[#e2d09c] relative bg-white rounded-lg mb-4"
     >
       <Link href={`dish/${item.slug}`}>
         <img
@@ -144,11 +126,10 @@ export const CartItem = ({ item, delay, cartItems, setCartItems }) => {
       <button
         className="absolute right-2 bottom-2"
         onClick={() => {
-          notify();
           handleDelete();
         }}
       >
-        <BiX size={18} color="#BD0000" />{" "}
+        <BiX size={18} color="#BD0000" />
       </button>
     </motion.div>
   );

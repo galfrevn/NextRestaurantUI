@@ -1,11 +1,11 @@
-import React, { useContext } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { BiBasket, BiChevronLeft, BiHeart } from "react-icons/bi";
+import { AiFillHeart } from "react-icons/ai";
 import Counter from "../../components/Counter";
 
 import client from "../../client";
 import { gql } from "@apollo/client";
-import CartContext from "../../context/CartContext";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -20,15 +20,17 @@ export default function Dish({ findFood }) {
   };
 
   return (
-    <div className="relative h-screen bg-white z-40">
-      <Head>
-        <title>{findFood.name} | VNRestaurant</title>
-      </Head>
-      <ToastContainer limit={1} />
-      <BackButton handleBack={handleBack} />
-      <DishImage image={findFood.image} />
-      <Information data={findFood} />
-    </div>
+    <>
+      <ToastContainer />
+      <div className="relative h-screen bg-white z-40">
+        <Head>
+          <title>{findFood.name} | VNRestaurant</title>
+        </Head>
+        <BackButton handleBack={handleBack} />
+        <DishImage image={findFood.image} />
+        <Information data={findFood} />
+      </div>
+    </>
   );
 }
 
@@ -88,10 +90,8 @@ export const Information = ({ data }) => (
 );
 
 export const BottomOptions = ({ data }) => {
-  const { cartItems, setCartItems } = useContext(CartContext);
-
   const notify = () => {
-    toast.info("🍔 added to cart", {
+    toast.success("🍔 Added to cart", {
       position: "top-right",
       autoClose: 700,
       hideProgressBar: false,
@@ -104,8 +104,9 @@ export const BottomOptions = ({ data }) => {
   };
 
   const handleAddToCard = () => {
+    const cartItems = JSON.parse(localStorage.getItem("cartItems"));
     cartItems.push(data.slug);
-    setCartItems(cartItems);
+    localStorage.setItem("cartItems", JSON.stringify(cartItems));
   };
 
   return (
@@ -113,7 +114,7 @@ export const BottomOptions = ({ data }) => {
       <div className="flex items-center w-full justify-between mb-5">
         <Counter />
         <div className="flex space-x-3">
-          <FavButton />
+          <FavButton slug={data.slug} />
           <Rating stars={data.stars} />
         </div>
       </div>
@@ -131,11 +132,72 @@ export const BottomOptions = ({ data }) => {
   );
 };
 
-export const FavButton = () => (
-  <button className="rounded-md flex items-center justify-center h-10 w-10 bg-[#f1f1f1] text-customDark font-semibold">
-    <BiHeart className="w-5 h-5" />
-  </button>
-);
+export const FavButton = ({ slug }) => {
+  const [items, setItems] = useState([]);
+  const [isFav, setIsFav] = useState(false);
+
+  const notifyAdd = () => {
+    toast.info("🍔 Added to favorites", {
+      position: "top-right",
+      autoClose: 700,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: false,
+      draggable: false,
+      progress: undefined,
+    });
+  };
+  const notifyDelete = () => {
+    toast.warning("🍔 Removed from favorites", {
+      position: "top-right",
+      autoClose: 700,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: false,
+      draggable: false,
+      progress: undefined,
+    });
+  };
+
+  const handleFav = () => {
+    const favItems = JSON.parse(localStorage.getItem("favItems")) || [];
+    if (favItems.includes(slug)) {
+      const newFavItems = favItems.filter((item) => item !== slug);
+      localStorage.setItem("favItems", JSON.stringify(newFavItems));
+      setIsFav(false);
+      notifyDelete();
+    } else {
+      favItems.push(slug);
+      localStorage.setItem("favItems", JSON.stringify(favItems));
+      setIsFav(true);
+      notifyAdd();
+    }
+  };
+
+  useEffect(() => {
+    const favItems = JSON.parse(localStorage.getItem("favItems")) || [];
+    setItems(favItems);
+
+    if (favItems.includes(slug)) {
+      setIsFav(true);
+    } else {
+      setIsFav(false);
+    }
+  }, [isFav]);
+
+  return (
+    <button
+      className="rounded-md flex items-center justify-center h-10 w-10 bg-[#f1f1f1] text-customDark font-semibold"
+      onClick={handleFav}
+    >
+      {isFav ? (
+        <AiFillHeart className="w-5 h-5 text-[#d62121]" />
+      ) : (
+        <BiHeart className="w-5 h-5" />
+      )}
+    </button>
+  );
+};
 
 export const Rating = ({ stars }) => (
   <div className="flex items-center bg-[#f1f1f1] p-2 px-4 rounded-md">

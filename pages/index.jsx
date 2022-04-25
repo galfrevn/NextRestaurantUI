@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { MENU } from "../queries";
 import client from "../client";
-import FilterContext from "../context/FilterContext";
+
 import Image from "next/image";
 
 import dynamic from "next/dynamic";
@@ -53,7 +53,7 @@ export default function Home({ data, isOpened }) {
   const mainMenu = data.foods;
 
   const [menu, setMenu] = useState(mainMenu);
-  const { filter } = useContext(FilterContext);
+  const [filter, setfilter] = useState("")
 
   useEffect(() => {
     if (filter !== "") {
@@ -72,7 +72,7 @@ export default function Home({ data, isOpened }) {
         } relative z-40 transition-all duration-300 pl-6 py-6 w-full flex bg-white items-center space-x-5 overflow-x-scroll scrollbar-none pr-4 `}
       >
         {categories.map((categorie, index) => (
-          <CategorieCard key={index} {...categorie} />
+          <CategorieCard key={index} {...categorie} filter={filter} setFilter={setfilter} />
         ))}
       </div>
       <Menu data={menu} isOpened={isOpened} isAdmin={false} setMenu={setMenu} />
@@ -80,8 +80,8 @@ export default function Home({ data, isOpened }) {
   );
 }
 
-export const CategorieCard = ({ name, image, code }) => {
-  const { filter, setFilter } = useContext(FilterContext);
+export const CategorieCard = ({ name, image, code, filter, setFilter }) => {
+  
   return (
     <button
       className={` ${

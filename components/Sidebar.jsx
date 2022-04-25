@@ -49,7 +49,7 @@ export default function Sidebar({ isOpened, setIsOpened }) {
                 </Link>
               </li>
               <li>
-                <Link href="/contact">
+                <Link href="/info">
                   <button onClick={() => setIsOpened(!isOpened)}>
                     Contact
                   </button>
