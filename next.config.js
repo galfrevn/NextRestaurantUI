@@ -14,7 +14,8 @@ module.exports = withPWA({
       "d1csarkz8obe9u.cloudfront.net",
       "i.pinimg.com",
       "www.bizadmark.com",
-      "s3-eu-central-1.amazonaws.com"
+      "s3-eu-central-1.amazonaws.com",
+      "localhost"
     ],
   },
 });

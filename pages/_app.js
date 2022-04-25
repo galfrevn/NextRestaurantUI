@@ -12,6 +12,8 @@ import { useState } from "react";
 import Head from "next/head";
 
 import dynamic from "next/dynamic";
+import { ApolloProvider } from "@apollo/client";
+import client from "../client";
 
 const DynamicSidebar = dynamic(() => import("../components/Sidebar"), {
   loading: () => <p>...</p>,
@@ -57,16 +59,17 @@ function MyApp({ Component, pageProps }) {
         <meta property="og:site_name" content="VNRestaurant" />
         <meta property="og:url" content="https://vnrestaurant.netlify.app" />
       </Head>
+      <ApolloProvider client={client} >
+        <RelativeContainer>
+          <DynamicSidebar isOpened={isOpened} setIsOpened={setIsOpened} />
+          <Bar isOpened={isOpened} setIsOpened={setIsOpened} />
 
-      <RelativeContainer>
-        <DynamicSidebar isOpened={isOpened} setIsOpened={setIsOpened} />
-        <Bar isOpened={isOpened} setIsOpened={setIsOpened} />
+          <SearchBar isOpened={isOpened} />
+          <Component {...pageProps} isOpened={isOpened} />
 
-        <SearchBar isOpened={isOpened} />
-        <Component {...pageProps} isOpened={isOpened} />
-
-        <Navigation selected={router.pathname} isOpened={isOpened} />
-      </RelativeContainer>
+          <Navigation selected={router.pathname} isOpened={isOpened} />
+        </RelativeContainer>
+      </ApolloProvider>
     </>
   );
 }

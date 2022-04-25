@@ -3,7 +3,6 @@ import { BiChevronLeft, BiRightArrowCircle } from "react-icons/bi";
 import { CREATE_DISH, TYPES } from "../../../queries";
 
 import { useRouter } from "next/router";
-import client from "../../../client";
 import Image from "next/image";
 
 import { ToastContainer, toast } from "react-toastify";
@@ -11,19 +10,30 @@ import "react-toastify/dist/ReactToastify.css";
 
 // React Hook Form
 import { useForm } from "react-hook-form";
+import client from "../../../client";
+import { gql, useMutation } from "@apollo/client";
 
 const ERROR_IMG =
   "https://www.javelingroup.com/wp-content/uploads/2019/05/placeholder-image-300x225.png";
 
+const UPLOAD_FILE = gql`
+  mutation uploadFile($file: Upload!) {
+    uploadFile(file: $file) {
+      filename
+      mimetype
+      encoding
+      url
+    }
+  }
+`;
+
 export default function Create({ isOpened, data }) {
-  const [source, setSource] = useState(ERROR_IMG);
   const [selected, setSelected] = useState(data.getTypes[0]);
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
-
-  const setImage = () => {
-    setSource(document.getElementById("image").value);
+  const handleBack = () => {
+    router.back();
   };
 
   const {
@@ -37,14 +47,22 @@ export default function Create({ isOpened, data }) {
     return parseFloat(str);
   }
 
-  const onSubmit = async (x) => {
+  const onSubmit = async (e) => {
     setLoading(true);
     const newProduct = {
-      ...x,
+      ...e,
       type: selected,
-      slug: x.name.toLowerCase().replace(/ /g, "-"),
+      slug: e.name.toLowerCase().replace(/ /g, "-"),
       stars: getRandomFloat(1, 5, 1),
     };
+
+    const { data } = await client.mutate({
+      mutation: UPLOAD_FILE,
+      variables: {
+        file: e.image[0],
+      },
+    });
+    const imageUrl = data.uploadFile.url;
 
     await client
       .mutate({
@@ -54,7 +72,7 @@ export default function Create({ isOpened, data }) {
           name: newProduct.name,
           description: newProduct.description,
           price: parseInt(newProduct.price),
-          image: newProduct.image,
+          image: imageUrl,
           type: newProduct.type,
           slug: newProduct.slug,
           stars: newProduct.stars,
@@ -79,10 +97,6 @@ export default function Create({ isOpened, data }) {
       progress: undefined,
     });
     toast.clearWaitingQueue();
-  };
-
-  const handleBack = () => {
-    router.back();
   };
 
   return (
@@ -126,7 +140,7 @@ export default function Create({ isOpened, data }) {
 
                   <input
                     id="image"
-                    type="text"
+                    type="file"
                     placeholder="Image URL"
                     className="w-full text-xs text-customDark border-2 border-customLight focus:outline-accent placeholder:font-medium font-medium placeholder:text-[#d1d1d1] rounded-xl py-3 px-6 mt-2"
                     {...register("image", {
