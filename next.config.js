@@ -15,7 +15,8 @@ module.exports = withPWA({
       "i.pinimg.com",
       "www.bizadmark.com",
       "s3-eu-central-1.amazonaws.com",
-      "localhost"
+      "localhost",
+      "restaurant-graphql-backend.herokuapp.com"
     ],
   },
 });
