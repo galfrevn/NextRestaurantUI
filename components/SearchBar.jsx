@@ -27,7 +27,7 @@ function SearchBar({ isOpened }, props) {
             sourceId: "backend",
             getItems: async ({ query }) => {
               return fetch(
-                `https://restaurant-graphql-backend.herokuapp.com/`,
+                `https://restaurant-graphql-backend.herokuapp.com/graphql`,
                 {
                   method: "POST",
                   headers: {

@@ -11,10 +11,7 @@ import "react-toastify/dist/ReactToastify.css";
 // React Hook Form
 import { useForm } from "react-hook-form";
 import client from "../../../client";
-import { gql, useMutation } from "@apollo/client";
-
-const ERROR_IMG =
-  "https://www.javelingroup.com/wp-content/uploads/2019/05/placeholder-image-300x225.png";
+import { gql } from "@apollo/client";
 
 const UPLOAD_FILE = gql`
   mutation uploadFile($file: Upload!) {
@@ -80,8 +77,8 @@ export default function Create({ isOpened, data }) {
         },
       })
       .then(() => {
-        setLoading(false);
         notify();
+        setLoading(false);
         router.push("/admin/dishes");
       });
   };
@@ -101,12 +98,14 @@ export default function Create({ isOpened, data }) {
 
   return (
     <>
+      
       <ToastContainer limit={3} />
       <div
         className={`${
           isOpened && "translate-x-2/3"
         } relative z-40 transition-all duration-300 bg-customLight `}
       >
+        {loading && <LoadingOverlay />}
         <div className="relative h-screen bg-white z-40">
           <BackButton handleBack={handleBack} />
 
@@ -158,6 +157,7 @@ export default function Create({ isOpened, data }) {
                     className="w-full text-xs text-customDark border-2 border-customLight focus:outline-accent placeholder:font-medium font-medium placeholder:text-[#d1d1d1] rounded-xl py-3 mt-2 px-6"
                     {...register("description", {
                       required: true,
+                      minLength: 10,
                     })}
                   />
                   <div className="text-accent text-[11px]  ">
@@ -228,6 +228,12 @@ export const BackButton = ({ handleBack }) => (
     <BiChevronLeft className=" w-5 h-5 stroke-1 text-white" />
   </button>
 );
+
+const LoadingOverlay = () => (
+  <div className="fixed top-0 left-0 bg-[rgba(255,255,255,.6)] h-screen w-screen flex justify-center items-center text-xs text-customDark z-50">
+    Creating your new dish...
+  </div>
+)
 
 export async function getServerSideProps({ req, res }) {
   res.setHeader(
