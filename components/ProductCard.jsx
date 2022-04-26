@@ -15,35 +15,37 @@ export default function ProductCard({
   return (
     <>
       {style === "grid" ? (
-        <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          whileInView={{
-            y: 0,
-            opacity: 1,
-            transition: { delay: 0.05 * delay },
-          }}
-          viewport={{ once: true }}
-        >
-          <Link href={"/dish/" + slug} passHref={false}>
-            <div className="bg-white rounded-xl p-4 flex flex-col items-center text-center border-[1px] border-[#e2d09c]">
-              <div className="bg-customLight p-2 rounded-xl">
-                <Image
-                  src={image}
-                  alt={name}
-                  layout="fixed"
-                  width={120}
-                  height={80}
-                  placeholder="blur"
-                  blurDataURL={image}
-                />
+        <>
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            whileInView={{
+              y: 0,
+              opacity: 1,
+              transition: { delay: 0.05 * delay },
+            }}
+            viewport={{ once: true }}
+          >
+            <Link href={"/dish/" + slug} passHref={false}>
+              <div className="bg-white rounded-xl p-4 flex flex-col items-center text-center border-[1px] border-[#e2d09c]">
+                <div className="bg-customLight p-2 rounded-xl">
+                  <Image
+                    src={image}
+                    alt={name}
+                    layout="fixed"
+                    width={120}
+                    height={80}
+                    placeholder="blur"
+                    blurDataURL={image}
+                  />
+                </div>
+                <div className="bg-accent w-10 h-1 mt-5 rounded-full"></div>
+                <div className="mt-4 text-xs font-semibold text-customDark ">
+                  {name}
+                </div>
               </div>
-              <div className="bg-accent w-10 h-1 mt-5 rounded-full"></div>
-              <div className="mt-4 text-xs font-semibold text-customDark ">
-                {name}
-              </div>
-            </div>
-          </Link>
-        </motion.div>
+            </Link>
+          </motion.div>
+        </>
       ) : (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
